@@ -11,13 +11,11 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        kopub: ["KoPubWorld Batang Medium", ...fontFamily.sans], // KoPubWorld 폰트
-        kyobo: ["KyoboHandwriting2023wsa", ...fontFamily.sans], // 교보 폰트
-        incheon: ["incheon", ...fontFamily.sans], // 인천 폰트
-        ylee: ["ylee", ...fontFamily.sans], // 인천 폰트
-        Gabia: ["GabiaCheongyeon", ...fontFamily.sans], // 인천 폰트
-        JejuMyeongjo: ["JejuMyeongjoOTF", ...fontFamily.sans], // 인천 폰트Chilgok
-        Chilgok: ["Chilgok", ...fontFamily.sans], // 인천 폰트
+        kopub: ["KoPubWorld Batang Medium", ...fontFamily.sans],
+        incheon: ["incheon", ...fontFamily.sans],
+        ylee: ["ylee", ...fontFamily.sans],
+        Gabia: ["GabiaCheongyeon", ...fontFamily.sans],
+        JejuMyeongjo: ["JejuMyeongjoOTF", ...fontFamily.sans],
       },
       colors: {
         background: "hsl(var(--background))",
@@ -53,13 +51,6 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -68,6 +59,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 };
 export default config;

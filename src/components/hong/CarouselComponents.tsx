@@ -7,8 +7,6 @@ import useEmblaCarousel, {
 import { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -195,42 +193,5 @@ const CarouselItem = React.forwardRef<
   );
 });
 CarouselItem.displayName = "CarouselItem";
-
-type CarouselControlProps = {
-  onClick: () => void;
-  disabled?: boolean;
-};
-
-export const CarouselPrevious = React.forwardRef<
-  HTMLButtonElement,
-  CarouselControlProps
->(({ onClick, disabled }, ref) => (
-  <Button
-    ref={ref}
-    className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white text-black p-2 rounded-full"
-    onClick={onClick}
-    disabled={disabled}
-  >
-    <ArrowLeft className="h-5 w-5" />
-  </Button>
-));
-
-CarouselPrevious.displayName = "CarouselPrevious";
-
-export const CarouselNext = React.forwardRef<
-  HTMLButtonElement,
-  CarouselControlProps
->(({ onClick, disabled }, ref) => (
-  <Button
-    ref={ref}
-    className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white text-black p-2 rounded-full"
-    onClick={onClick}
-    disabled={disabled}
-  >
-    <ArrowRight className="h-5 w-5" />
-  </Button>
-));
-
-CarouselNext.displayName = "CarouselNext";
 
 export { Carousel, CarouselContent, CarouselItem };

@@ -63,6 +63,27 @@ body {
   }
 }
 
+@keyframes book-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+.book-float {
+  animation: book-float 5s ease-in-out infinite;
+}
+
+.book-3d {
+  transform: perspective(1200px) rotateY(-5deg) rotateX(1deg);
+  transition:
+    transform 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.book-3d:hover {
+  transform: perspective(1200px) rotateY(-1.5deg) rotateX(0deg) translateY(-6px);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -124,6 +145,8 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    min-height: 100vh;
+    background: linear-gradient(165deg, #fdfaf5 0%, #f5edd8 45%, #ede1c8 100%);
   }
 }

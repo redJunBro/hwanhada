@@ -1,139 +1,104 @@
-import { useState, useRef, useEffect } from "react";
+"use client";
+import { Play, Pause } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
 
-export default function MusicPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+type MusicPlayerProps = {
+  isPlaying: boolean;
+  onToggle: () => void;
+  currentTime: number;
+  duration: number;
+  onSeek: (time: number) => void;
+};
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+export default function MusicPlayer({
+  isPlaying,
+  onToggle,
+  currentTime,
+  duration,
+  onSeek,
+}: MusicPlayerProps) {
+  const { theme } = useTheme();
 
-  const toggleAudio = () => {
-    if (!audioRef.current) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
-    setIsPlaying(!isPlaying);
+  const fmt = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${m}:${sec < 10 ? "0" : ""}${sec}`;
   };
 
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  };
-
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    if (audio) {
-      const updateCurrentTime = () => setCurrentTime(audio.currentTime);
-      const updateDuration = () => setDuration(audio.duration);
-
-      audio.addEventListener("timeupdate", updateCurrentTime);
-      audio.addEventListener("loadedmetadata", updateDuration);
-
-      return () => {
-        audio.removeEventListener("timeupdate", updateCurrentTime);
-        audio.removeEventListener("loadedmetadata", updateDuration);
-      };
-    }
-  }, []);
-
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (audioRef.current) {
-      const newTime = parseFloat(e.target.value);
-      audioRef.current.currentTime = newTime;
-      setCurrentTime(newTime);
-    }
-  };
+  const pct = duration > 0 ? (currentTime / duration) * 100 : 0;
+  const fill  = theme === "light" ? "#78716c" : "#a8a29e";
+  const track = theme === "light" ? "#e7e5e4" : "#44403c";
+  const thumb = theme === "light" ? "#57534e" : "#d6d3d1";
 
   return (
-    <div className="music-player">
-      <audio ref={audioRef} src="/music/saf45929324.mp3" preload="auto"></audio>
-      <div className="player-container">
-        <button onClick={toggleAudio} className="play-pause-button">
-          {isPlaying ? "❚❚" : "▶"}
-        </button>
-        <div className="time-slider-container">
-          <span className="time">{formatTime(currentTime)}</span>
-          <input
-            type="range"
-            min="0"
-            max={duration}
-            step="0.1"
-            value={currentTime}
-            onChange={handleSliderChange}
-            className="slider"
-          />
-          <span className="time">{formatTime(duration)}</span>
-        </div>
+    <div className="flex items-center gap-3 px-1 py-1">
+      <button
+        onClick={onToggle}
+        aria-label={isPlaying ? "일시정지" : "재생"}
+        className="
+          flex-none w-9 h-9 flex items-center justify-center rounded-full
+          bg-stone-200/70 dark:bg-stone-800/70
+          hover:bg-stone-300/90 dark:hover:bg-stone-700/90
+          active:scale-95 transition-all duration-150
+          text-stone-600 dark:text-stone-300
+        "
+      >
+        {isPlaying
+          ? <Pause className="w-4 h-4" />
+          : <Play  className="w-4 h-4 translate-x-px" />
+        }
+      </button>
+
+      <div className="flex-1 relative flex items-center">
+        <input
+          type="range"
+          min={0}
+          max={duration || 100}
+          step={0.1}
+          value={currentTime}
+          onChange={(e) => onSeek(parseFloat(e.target.value))}
+          className="music-slider w-full h-[3px] rounded-full outline-none cursor-pointer"
+          style={{
+            WebkitAppearance: "none",
+            appearance: "none",
+            background: `linear-gradient(to right, ${fill} ${pct}%, ${track} ${pct}%)`,
+            ["--thumb-color" as string]: thumb,
+          }}
+        />
       </div>
 
-      <style jsx>{`
-        audio {
-          appearance: none; /* 모든 브라우저에서 기본 스타일 제거 */
-          -webkit-appearance: none;
-        }
-        .music-player {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          margin: 20px 0;
-        }
-        .player-container {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-        }
-        .play-pause-button {
-          background: none; /* 배경 제거 */
-          border: none;
-          color: #000; /* 버튼 아이콘 색상 설정 */
-          font-size: 24px; /* 아이콘 크기 조정 */
-          width: auto; /* 버튼 크기 자동 조정 */
-          height: auto;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          outline: none;
-        }
-        .time-slider-container {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-        .time {
-          font-size: 14px;
-          color: #333;
-        }
-        .slider {
-          -webkit-appearance: none;
-          width: 200px;
-          height: 5px;
-          background: #ccc;
-          border-radius: 5px;
-          outline: none;
-        }
-        .slider::-webkit-slider-thumb {
+      <span className="flex-none text-xs tabular-nums text-stone-400 dark:text-stone-500 font-incheon whitespace-nowrap">
+        {fmt(currentTime)} / {fmt(duration)}
+      </span>
+
+      <style>{`
+        .music-slider::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
-          width: 10px;
-          height: 10px;
-          background: #333;
+          width: 14px;
+          height: 14px;
           border-radius: 50%;
+          background: var(--thumb-color, #57534e);
           cursor: pointer;
+          border: none;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
-        .slider::-moz-range-thumb {
-          width: 10px;
-          height: 10px;
-          background: #333;
+        .music-slider::-moz-range-thumb {
+          width: 14px;
+          height: 14px;
           border-radius: 50%;
+          background: var(--thumb-color, #57534e);
           cursor: pointer;
+          border: none;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .music-slider::-webkit-slider-runnable-track {
+          height: 3px;
+          border-radius: 9999px;
+        }
+        .music-slider::-moz-range-track {
+          height: 3px;
+          border-radius: 9999px;
         }
       `}</style>
     </div>
