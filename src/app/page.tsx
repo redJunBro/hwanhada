@@ -360,7 +360,10 @@ export default function Home() {
 
         <div className="border-l-2 border-stone-300 dark:border-stone-700 pl-4">
           <p className="text-base leading-relaxed text-stone-900 dark:text-stone-300 font-ylee">
-            시 쓰는 파티쉐 세상의 습도를 느끼고 마음의 온도로 구워냅니다
+            시 쓰는 파티쉐,
+          </p>
+          <p className="text-base leading-relaxed text-stone-900 dark:text-stone-300 font-ylee">
+            세상의 습도를 느끼고 마음의 온도로 구워냅니다
           </p>
         </div>
       </div>
