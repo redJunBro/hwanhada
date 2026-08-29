@@ -213,7 +213,7 @@ export const BookData: Book[] = [
         image: "",
       },
       {
-        textContents: "3부\n-\n\n타버린 빵 처리하는 방식",
+        textContents: "3부\n-\n\n타버린 빵을 처리하는 방식",
         image: "",
       },
       {
