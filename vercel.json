@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "",
+  "buildCommand": "",
+  "outputDirectory": "public",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://nangmanworks.app/c/hwanhada-wnyzwe",
+      "permanent": false
+    },
+    {
+      "source": "/:path*",
+      "destination": "https://nangmanworks.app/c/hwanhada-wnyzwe",
+      "permanent": false
+    }
+  ]
+}
